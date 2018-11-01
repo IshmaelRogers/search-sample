@@ -74,11 +74,6 @@ For this project the field of view of the camera gives the average values for an
 The input for the steering angles that can be sent to the rover is in degrees over the range -15 (to the right) and +15 (to the left)
 
 
-[//]: # (Image References)
-
-[image1]: ./misc/rover_image.jpg
-
-
 **Results**
 
 ![alt text][image1]
@@ -91,13 +86,12 @@ The Rover is good at following the left wall and geeting unstuck. Depending on a
 
 **Return Home**
 
-Future work will include a complete function for returning to the starting point.
-
+Future work will include a function for returning to the starting point. When started the robot will take a GPS reading for it's current location. Whether or not the robot will head home depends on the total number of rock samples plus the 10 minute time range that is given before the robot automatically returns home if it has at least half of the samples. 
 
 **Collect all the sample rocks**
 
-Improvements to the rock collecting function would allow the rover to find a rock, check to see if it has been collected and if not, check to see if the rock is in sight. If it is, move closer to it. If it is not, turn the robot towards the direction of the rock.
+Improvements to the rock collecting function would allow the rover to find a rock, record it's location in space (and certain distance away) and continously check to see if it has successfully collected the rock or not and if not orient it's self to face the rock and attmept to collect it.
 
 **PID control**
 
-Implementing a PID controller was difficult without robot parameters. Maybe I can inquire about the parameters seperately and implement in a future assignment. 
+Implementing a PID controller was difficult due to the lack of knowledge about the robots equations of motion. Maybe I can inquire about the parameters seperately and implement in a future assignment. 
