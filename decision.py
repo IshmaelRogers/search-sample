@@ -21,7 +21,7 @@ def findHome(Rover):
                 #  if stopped (after start) means stuck.
                 if Rover.vel <= 0.1 and Rover.total_time - Rover.stuck_time > 4:
                     # Set mode to "stuck" 
-                    #apply brakes
+                    # To do this start deccelerating 
                     Rover.throttle = 0
                     Rover.brake = Rover.brake_set
                     Rover.steer = 0
@@ -29,7 +29,6 @@ def findHome(Rover):
                     Rover.stuck_time = Rover.total_time
                 # if velocity gets below max accelerate
                 elif Rover.vel < Rover.max_vel:
-                    # Set throttle
                     Rover.throttle = Rover.throttle_set
                 else: # 
                     Rover.throttle = 0
@@ -42,9 +41,8 @@ def findHome(Rover):
 def decision_step(Rover):
 
 
-    # offset in rad used to hug the left wall.
+    # initialize the offset variable for wall hug feature 
     offset = 0
-    # Only apply left wall hugging when out of the starting point (after 10s)
     # to avoid getting stuck in a circle
     if Rover.total_time > 10:
         # Steering proportional to the deviation results in
@@ -58,20 +56,24 @@ def decision_step(Rover):
         if Rover.mode[-1] == 'home':
             onMyWay = findHome(Rover)
         if Rover.mode[-1] == 'forward':
-            # if sample rock on sight (on the left side only) and close
+            # if sample rock on sight, near a wall, and close
+            #TODO Create a functionality to ensure each rock found is collected within a reasonable time
             if Rover.samples_angles is not None and np.mean(Rover.samples_angles) > -0.2 and np.min(Rover.samples_dists) < 20:
                 Rover.rock_time = Rover.total_time
                 Rover.mode.append('rock')
 
-            # Check the extent of navigable terrain
+            # Check how much navigable terrain is available 
+            #navagiable terrain needs to be greater than the allowable distance 
+            #before initiating braking
+            
             elif len(Rover.nav_angles) >= Rover.stop_forward:
-                # If mode is forward, navigable terrain looks good
-                #  if stopped (after start) means stuck
+                #mode is forward, navigable terrain is high
+                #the velocity is close to zero and the the time being stuck is greater than 4s
                 if Rover.vel <= 0.1 and Rover.total_time - Rover.stuck_time > 4:
                     # Set mode to "stuck"
-                    #apply brakes
+                    # Apply brakes
                     Rover.throttle = 0
-                    # Set brake
+                    # Set brake to braking rate
                     Rover.brake = Rover.brake_set
                     Rover.steer = 0
                     Rover.mode.append('stuck')
